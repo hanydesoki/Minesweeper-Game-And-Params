@@ -73,11 +73,11 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
                 Slider("number_mines", default_value=25, min_value=3, max_value=99, interval=1, label_display="Number of mines", value_format=lambda x: str(int(x))),
                 SegmentedControl(
                     "difficulty", 
-                    default_value=[], 
+                    default_value=["beginner"], 
                     available_options_raw=["beginner", "intermediate", "expert"],
                     available_options_display=["Beginner", "Intermediate", "Expert"],
-                    require_selection=False,
-                    allow_multiselection=True,
+                    require_selection=True,
+                    allow_multiselection=False,
                     label_display"Difficulty"
                 )
             ], 
@@ -116,7 +116,7 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
 
   ## Future improvements / fixes
 
-  - Save personal best game time (only for preset difficulty settings) and settings in a json file and getting showing them in the game.
+  - Save personal best game time (only for preset difficulty settings) and settings in a json file and showing them in the game.
   - Unexpected behaviour: Resetting a game with SPACE when we activated a cheat before will not recheck if options are matching any difficulty.
     The difficulty option segmented control will still be empty even if it is matching one of them.
   - Improve performances: Still drawing tiles even when they are covered ...

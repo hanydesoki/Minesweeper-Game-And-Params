@@ -42,7 +42,7 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
 
   ### Goal: Very high level code and flexible!
   
-  The parameter menu is coded to be easy to create and manage in any pygame project. Made the ParameterMenu class a very high 
+  The parameter menu is coded to be easy to create and manage in any pygame project. Made the **ParameterMenu** class (parameter_menu.py) a very high 
   level interface:
 
   - Provide a list of parameters. Each type of parameter has its own class with all of the needed parameters.
@@ -52,13 +52,61 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
     
   - Each parameter will have a key label and will generate the associated widget.
   
-  - Once the menu instanciated, it will need to be updated (with the update method) for each frame of the game loop to be fully functionnal. From 
-    here, we can access every parameter directly with the label key passed associated with the parameter (Ex: number_mines = parameter_menu["number_mines"])
+  - Once the menu instanciated, it will need to be updated (with the **update** and **draw** method) for each frame of the game loop to be fully functionnal. From 
+    here, we can access every parameter directly with the label key passed associated with the parameter.
     
-  - We will also be able to track all the parameters that are changing during this frame using the value_changes attribute.
+  - We will also be able to track all the parameters that are changing during this frame using the **value_changes** attribute.
 
   - We can access at any moment any widget in the menu. All of the widget parameter can be modified during the game loop using some method. The common one
-    is set_value.
+    is **set_value**.
+
+  ```py
+    # Example of code with parameter menu. It is a very simplified version of a section of the minesweeper code.
+
+    NUMBER_ROWS: int = 10
+    NUMBER_COLS: int = 10
+
+    parameter_menu: ParametersMenu = ParametersMenu(
+            parameters=[
+                CheckBox("guaranted_patch", default_value=True, label_display="Guaranted empty field first click"),
+                CheckBox("show_surrounding", label_display="Highlight surrounding tiles"),
+                Slider("number_mines", default_value=25, min_value=3, max_value=99, interval=1, label_display="Number of mines", value_format=lambda x: str(int(x))),
+                SegmentedControl(
+                    "difficulty", 
+                    default_value=[], 
+                    available_options_raw=["beginner", "intermediate", "expert"],
+                    available_options_display=["Beginner", "Intermediate", "Expert"],
+                    require_selection=False,
+                    allow_multiselection=True,
+                    label_display"Difficulty"
+                )
+            ], 
+            screen_position="bottom",
+            size=300
+        )
+
+    game_loop: bool = True
+
+    while game_loop:
+
+        ...
+
+        parameter_menu.update()
+
+        # Exemple: access to the "number_mines" parameter
+        number_mines = parameter_menu["number_mines"]
+
+        all_changes: dict = parameter_menu.value_changes # dictionnary containing all the parameters
+                                                         # that change with also the old value and new value provided
+
+        # Change number of mines slider max value when guaranted empty field option change
+        if all_changes.get("guaranted_patch", None) is not None:
+            number_mine_widget = parameter_menu.widgets["guaranted_patch"]
+            number_mine_widget.set_max_value(NUMBER_ROWS * NUMBER_COLS - (9 if parameter_menu["guaranted_patch"] else 1))
+        
+        parameter_menu.draw()
+        
+  ```
 
   ### Widget implemented
 

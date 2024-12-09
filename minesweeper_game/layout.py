@@ -607,7 +607,7 @@ class Layout:
             self.initiate_grid()
 
         if any(opt in ["show_bombs", "show_patches", "show_surrounding"] for opt in option_changes) and not self.ignore_cheat_check:
-            print("cheat activated")
+            # print("cheat activated")
             self.cheat_activated = True
             self.parameter_menu.refresh_parameters()
 

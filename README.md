@@ -42,7 +42,7 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
 
   ### Goal: Very high level code and flexible!
   
-  The parameter menu is coded to be easy to create and manage in any pygame project. Made the **ParameterMenu** class (parameter_menu.py) a very high 
+  The parameter menu is coded to be easy to create and manage in any pygame project. Made the **ParametersMenu** class (parameters_menu.py) a very high 
   level interface:
 
   - Provide a list of parameters. Each type of parameter has its own class with all of the needed parameters.

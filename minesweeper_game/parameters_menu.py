@@ -147,7 +147,7 @@ class SliderWidget(ParameterWidget):
         
 
         self.all_slider_positions: list[float] = [self.get_slider_pos(val)[0] for val in self]
-        # print(self.all_slider_positions)
+        # print(label, self.all_slider_positions, end="\n" * 5)
         self.is_selected: bool = False
 
         self.value_format: Callable = value_format if value_format is not None else str
@@ -182,10 +182,11 @@ class SliderWidget(ParameterWidget):
         # rect.x = x + self.width * (self.value - self.min_value) / (self.max_value - self.min_value)
         # rect.x - x = self.width * (self.value - self.min_value) / (self.max_value - self.min_value)
         # (rect.x - x) / self.width * (self.max_value - self.min_value) + self.min_value = self.value 
-        new_value = (self.slider_rect.centerx - self.rail_rect.left) / self.width * (self.max_value - self.min_value) + self.min_value
+        # new_value = (self.slider_rect.centerx - self.rail_rect.left) / self.width * (self.max_value - self.min_value) + self.min_value
+        # new_value: float = self[self.all_slider_positions.index(new_position)]
 
-        self.value = round(new_value, self.number_decimals)
-        # print(self.value)
+        self.value = self[self.all_slider_positions.index(new_position)]
+        # print(new_value, self.value)
 
     def draw(self) -> None:
         self.surface.blit(self.rail_surf, self.rail_rect)
@@ -251,6 +252,9 @@ class SliderWidget(ParameterWidget):
         for _ in range(len(self) + 1):
             yield value
             value = round(value + self.interval)
+
+    def __getitem__(self, index: int) -> float:
+        return round(self.min_value + index * self.interval, self.number_decimals)
 
 
 class SegmentedControlWidget(ParameterWidget):
@@ -410,8 +414,9 @@ class Slider(Param):
                 min_value: float,
                 max_value: float,
                 interval: float,
+                width: int = 100,
                 label_display: str | None = None,
-                value_format: Callable | None = None
+                value_format: Callable | None = None,
             ) -> None:
         super().__init__()
         self.label: str = label
@@ -419,6 +424,7 @@ class Slider(Param):
         self.min_value: float = min_value
         self.max_value: float = max_value
         self.interval: float = interval
+        self.width: int = width
         self.label_display: str | None = label_display
         self.value_format: Callable | None = value_format
 
@@ -514,6 +520,7 @@ class ParametersMenu:
                     min_value=param.min_value,
                     max_value=param.max_value,
                     interval=param.interval,
+                    width=param.width,
                     position=(x_pos, y_pos),
                     value_format=param.value_format,
                     surface=self.surface,

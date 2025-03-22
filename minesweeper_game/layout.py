@@ -440,10 +440,13 @@ class Layout:
         row_index, col_index = mouse_pos_indexes
 
         mouse_pressed: tuple[int, int, int] = pygame.mouse.get_pressed()
+        key_pressed = pygame.key.get_pressed()
+        
+        right_clicking: bool = mouse_pressed[2] or key_pressed[pygame.K_LCTRL]
+        chording: bool = sum(mouse_pressed[::2]) == 2 or (key_pressed[pygame.K_LCTRL] and mouse_pressed[0])
 
-        chording: bool = sum(mouse_pressed[::2]) == 2 or (pygame.key.get_pressed()[pygame.K_LCTRL] and mouse_pressed[0])
         # chording
-        if self.cover_grid[row_index][col_index] == 0 and chording:
+        if self.cover_grid[row_index][col_index] == 0 and right_clicking:
             proximity_mines: int = self.proximity_grid[row_index][col_index]
             if not proximity_mines: return
             
@@ -457,13 +460,12 @@ class Layout:
                 if not is_flag and self.cover_grid[i][j] == 1:
                     tiles_to_uncover.append((i, j))
 
-            if flag_count == proximity_mines:
+            self.unvalid_chord_tiles = tiles_to_uncover
+
+            if flag_count == proximity_mines and chording:
                 for i, j in tiles_to_uncover:
                     self.uncover_tiles(i, j)
-            else:
-                self.unvalid_chord_tiles = tiles_to_uncover
-
-            return
+        
         if self.cover_grid[row_index][col_index] == 0:
             return
         

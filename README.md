@@ -6,8 +6,20 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
 
 ## Features:
 
-  - Minesweeper game with a timer
+  - Minesweeper game with a timer:
+      The goal is to clear every tiles that doesn't hide a bomb. To do so, we uncover the tiles by clicking on them.
+      The number showing up on a tile indicate the number of mines surrounding that tile. We can indicate with a flag
+      a mine position by right clicking on the suspected tile (it is not a requierement but it will help the player).
+    
+      Also the 'Chording' mechanic is implemented: Holding right click (or CTRL) on a revealed tile with a number on it will
+      highlight all the non revealed surrounding tiles. If the number of flags within these tiles match the number of surrounding mines,
+      it will automatically reveal all the non flag tiles.
+
+      <img width="500px" src="https://github.com/hanydesoki/Minesweeper-Game-And-Params/blob/main/Screen_and_illustratons/chording_feature.PNG"></img>
+   
   - Parameter menu which control every aspect of the game:
+
+      <img width="500px" src="https://github.com/hanydesoki/Minesweeper-Game-And-Params/blob/main/Screen_and_illustratons/parameter_menu.PNG"></img>
     
       - Number of rows / cols
       - Number of mines
@@ -15,9 +27,15 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
       - Option to guarantee an empty field on the first click
       - Show tile position (more for debugging than for player)
       - Help and Cheats:
-         - Show bomb locations
+         - Show mine locations
+           
+          <img width="500px" src="https://github.com/hanydesoki/Minesweeper-Game-And-Params/blob/main/Screen_and_illustratons/show_bomb_features.PNG"></img>
          - Show empty fields
+       
+          <img width="500px" src="https://github.com/hanydesoki/Minesweeper-Game-And-Params/blob/main/Screen_and_illustratons/show_empty_field_feature.PNG"></img>
          - Show surrounding tiles of mouse position (helpful for counting tiles around the targeted tile)
+       
+          <img width="500px" src="https://github.com/hanydesoki/Minesweeper-Game-And-Params/blob/main/Screen_and_illustratons/show_surrounding_tiles_features.PNG"></img>
 
   ## Behaviour
   

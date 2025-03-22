@@ -94,8 +94,10 @@ class Layout:
         self.mine_grid: list[list[int]] = []
         self.proximity_grid: list[list[int]] = []
         self.cover_grid: list[list[int]] = []
+        
 
         self.uncover_groups: list[list[tuple[int, int]]] = []
+        self.unvalid_chord_tiles: list[tuple[int, int]] = []
 
         self.grid_topleft: tuple[int, int] = (
             self.screen.get_width() // 2 - (self.grid_size[1] * self.TILE_SIZES[max(self.grid_size)]) // 2,
@@ -351,6 +353,13 @@ class Layout:
 
                     self.screen.blit(top_cover_surf, top_cover_rect)
 
+                    if (row_index, col_index) in self.unvalid_chord_tiles:
+                        pygame.draw.rect(
+                            self.screen,
+                            UNCOVERED_TILE_COLOR,
+                            rect_value
+                        )
+
                     
                 pygame.draw.rect(
                     self.screen,
@@ -388,6 +397,7 @@ class Layout:
                     self.screen.blit(text_surf, text_rect)
 
 
+
     def get_current_mouse_tile_indexes(self) -> tuple[int, int] | None:
         
         mouse_pos: tuple[int, int] = pygame.mouse.get_pos()
@@ -406,6 +416,9 @@ class Layout:
     def manage_user_input(self, all_events: list[pygame.event.Event]) -> None:
         clicked: bool = False
         button_value: int | None
+
+        self.unvalid_chord_tiles = []
+
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.initiate_grid()
 
@@ -418,12 +431,38 @@ class Layout:
             return
             
         mouse_pos_indexes = self.get_current_mouse_tile_indexes()
-
+        
+        # Cancel if interacting with parameter menu or clicking outside the board
         if mouse_pos_indexes is None or self.parameter_menu.is_hovered():
             return
         
         row_index, col_index = mouse_pos_indexes
-        
+
+        mouse_pressed: tuple[int, int, int] = pygame.mouse.get_pressed()
+
+        chording: bool = sum(mouse_pressed[::2]) == 2 or (pygame.key.get_pressed()[pygame.K_LCTRL] and mouse_pressed[0])
+        # chording
+        if self.cover_grid[row_index][col_index] == 0 and chording:
+            proximity_mines: int = self.proximity_grid[row_index][col_index]
+            if not proximity_mines: return
+            
+            tiles_to_uncover: list[tuple[int, int]] = []
+            flag_count: int = 0
+
+            for i, j in self.get_surrounding_indexes(row_index, col_index):
+                is_flag: bool = self.cover_grid[i][j] == 2
+                flag_count += is_flag
+
+                if not is_flag and self.cover_grid[i][j] == 1:
+                    tiles_to_uncover.append((i, j))
+
+            if flag_count == proximity_mines:
+                for i, j in tiles_to_uncover:
+                    self.uncover_tiles(i, j)
+            else:
+                self.unvalid_chord_tiles = tiles_to_uncover
+
+            return
         if self.cover_grid[row_index][col_index] == 0:
             return
         

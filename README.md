@@ -7,7 +7,7 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
 ## Features:
 
   - Minesweeper game with a timer:
-      The goal is to clear every tiles that doesn't hide a bomb. To do so, we uncover the tiles by clicking on them.
+      The goal is to clear every tiles that doesn't hide a mine. To do so, we uncover the tiles by clicking on them.
       The number showing up on a tile indicate the number of mines surrounding that tile. We can indicate with a flag
       a mine position by right clicking on the suspected tile (it is not a requierement but it will help the player).
     
@@ -47,7 +47,7 @@ Classic minesweeper + game parameter management fully implemented with the  pyga
   - Difficulty options
   - Guaranted empty field first click
 
-  Pressing SPACE at anytime will reset the game. Bombs are generated only after the first click to prevent losing instantly.
+  Pressing SPACE at anytime will reset the game. Mines are generated only after the first click to prevent losing instantly.
 
   Changing difficulty option in the segmented control will pick a preset of parameters (Future improvement will be to
   save your personal best game time only when a difficulty option is selected). When modifying the options, the menu will

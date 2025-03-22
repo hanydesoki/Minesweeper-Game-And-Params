@@ -70,7 +70,7 @@ class Layout:
 
         self.parameter_menu: ParametersMenu = ParametersMenu(
             parameters=[
-                CheckBox("show_bombs",label_display="Show bombs"),
+                CheckBox("show_bombs",label_display="Show mines"),
                 CheckBox("show_patches", label_display="Show empty field"),
                 CheckBox("show_tile_pos", label_display="Show tile positions"),
                 CheckBox("show_surrounding", label_display="Highlight surrounding tiles"),

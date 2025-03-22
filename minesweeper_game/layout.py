@@ -5,6 +5,7 @@ from .settings import (
                         # TILE_SIZE,
                         UNCOVERED_TILE_COLOR, 
                         COVERED_TILE_COLOR,
+                        CHORDING_TILE_COLOR,
                         TOP_COVERED_TILE_COLOR,
                         MINE_COLOR, 
                         PROXIMITY_COLOR_PALETTE,
@@ -357,7 +358,7 @@ class Layout:
                     if (row_index, col_index) in self.unvalid_chord_tiles:
                         pygame.draw.rect(
                             self.screen,
-                            UNCOVERED_TILE_COLOR,
+                            CHORDING_TILE_COLOR,
                             rect_value
                         )
 
@@ -441,7 +442,7 @@ class Layout:
 
         mouse_pressed: tuple[int, int, int] = pygame.mouse.get_pressed()
         key_pressed = pygame.key.get_pressed()
-        
+
         right_clicking: bool = mouse_pressed[2] or key_pressed[pygame.K_LCTRL]
         chording: bool = sum(mouse_pressed[::2]) == 2 or (key_pressed[pygame.K_LCTRL] and mouse_pressed[0])
 

@@ -222,7 +222,8 @@ class Layout:
             prox_col_index: int = col_index + d_col_index
 
             # surorunding_indexes.append((prox_row_index, prox_col_index))
-            yield (prox_row_index, prox_col_index)
+            if self.is_index_inbound(prox_row_index, prox_col_index):
+                yield (prox_row_index, prox_col_index)
 
         # return surorunding_indexes
 
